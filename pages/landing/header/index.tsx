@@ -1,3 +1,4 @@
+import Signin from '@/src/components/Auth/Signin'
 import Signup from '@/src/components/Auth/Signup'
 import { Link } from '@mui/material'
 import { Box } from '@mui/system'
@@ -31,16 +32,16 @@ export default function LandingPageHeader() {
                             justifyContent: 'flex-end',
                         }}
                     >
-                        <Link
-                            color="inherit"
-                            variant="h6"
-                            underline="none"
-                            href="/premium-themes/onepirate/sign-in/"
-                            sx={rightLink}
+                        <Box
+                            sx={{
+                                width: '15%',
+                                display: 'flex',
+                                justifyContent: 'space-around',
+                            }}
                         >
-                            {'Sign In'}
-                        </Link>
-                        <Signup />
+                            <Signin />
+                            <Signup />
+                        </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
