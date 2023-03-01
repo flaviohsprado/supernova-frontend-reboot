@@ -1,3 +1,4 @@
+import Signup from '@/src/components/Auth/Signup'
 import { Link } from '@mui/material'
 import { Box } from '@mui/system'
 import AppBar from './appBar'
@@ -39,14 +40,7 @@ export default function LandingPageHeader() {
                         >
                             {'Sign In'}
                         </Link>
-                        <Link
-                            variant="h6"
-                            underline="none"
-                            href="/premium-themes/onepirate/sign-up/"
-                            sx={{ ...rightLink, color: 'secondary.main' }}
-                        >
-                            {'Sign Up'}
-                        </Link>
+                        <Signup />
                     </Box>
                 </Toolbar>
             </AppBar>
