@@ -1,3 +1,4 @@
+import { ToastContextProvider } from '@/src/providers/Toast.provider'
 import { theme } from '@/src/theme'
 import '@/styles/globals.css'
 import { ThemeProvider } from '@mui/material/styles'
@@ -13,9 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <main className={figtree.className}>
-                    <Component {...pageProps} />
-                </main>
+                <ToastContextProvider>
+                    <main className={figtree.className}>
+                        <Component {...pageProps} />
+                    </main>
+                </ToastContextProvider>
             </ThemeProvider>
         </>
     )
