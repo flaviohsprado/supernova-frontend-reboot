@@ -47,7 +47,7 @@ export const useLogin = () => {
                 isClosable: true,
             })
 
-            //router.push('/dashboard')
+            router.push('/dashboard')
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 
