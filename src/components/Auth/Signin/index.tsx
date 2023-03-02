@@ -1,4 +1,4 @@
-import { useSignup } from '@/src/hooks/auth/useSignup'
+import { useLogin } from '@/src/hooks/auth/useLogin'
 import { Typography } from '@mui/material'
 import { useState } from 'react'
 import PrimaryButton from '../../global/button/Primary'
@@ -7,19 +7,9 @@ import InputPassword from '../../global/input/Password'
 import InputText from '../../global/input/Text'
 import BasicModal from '../../global/Modal'
 
-export default function Signup() {
+export default function Signin() {
     const [open, setOpen] = useState(false)
-    const {
-        email,
-        setEmail,
-        username,
-        setUsername,
-        password,
-        setPassword,
-        confirmPassword,
-        setConfirmPassword,
-        handleSubmit,
-    } = useSignup()
+    const { email, setEmail, password, setPassword, handleSubmit } = useLogin()
 
     return (
         <>
@@ -28,13 +18,9 @@ export default function Signup() {
                     onClick: () => setOpen(true),
                 }}
             >
-                Sign up
+                Sign in
             </PrimaryButton>
-            <BasicModal
-                title="Create your account"
-                open={open}
-                setOpen={setOpen}
-            >
+            <BasicModal title={'Sign in'} open={open} setOpen={setOpen}>
                 <form onSubmit={handleSubmit}>
                     <InputText
                         label="Email"
@@ -42,25 +28,13 @@ export default function Signup() {
                         required
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <InputText
-                        label="Username"
-                        value={username}
-                        required
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
                     <InputPassword
                         label="Password"
                         value={password}
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <InputPassword
-                        label="Confirm your password"
-                        value={confirmPassword}
-                        required
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                    <SecondaryButton label="Sign up" type={'submit'} />
+                    <SecondaryButton label="Login" type={'submit'} />
                     <Typography
                         padding={2}
                         sx={{
@@ -68,7 +42,7 @@ export default function Signup() {
                             justifyContent: 'center',
                         }}
                     >
-                        Already have an account?{' '}
+                        Forgot your password?{' '}
                     </Typography>
                 </form>
             </BasicModal>

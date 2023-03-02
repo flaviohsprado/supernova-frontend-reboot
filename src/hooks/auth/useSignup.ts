@@ -55,8 +55,6 @@ export const useSignup = () => {
 
             localStorage.setItem('accessToken', String(data?.accessToken))
 
-            console.log(data)
-
             toast({
                 title: "We've created your account!",
                 description: 'Your account has been created successfully',

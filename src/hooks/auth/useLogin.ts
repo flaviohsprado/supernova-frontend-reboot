@@ -1,46 +1,62 @@
+import { ICustomError } from '@/src/interfaces/error.interface'
+import { HttpClient } from '@/src/services/HttpClient'
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
-import { setCookie } from 'nookies'
 import { useState } from 'react'
+import useToastContext from '../useToast'
+
+export async function getServerSideProps(context: any) {
+    return {
+        redirect: {
+            permanent: false,
+            destination: '/?status=401',
+        },
+    }
+}
+
+interface ILoginResponse {
+    accessToken: string
+}
 
 export const useLogin = () => {
+    const router = useRouter()
+    const { toast } = useToastContext()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [accessToken, setAccessToken] = useState('')
-    const router = useRouter()
 
-    const [login] = useLoginMutation()
-
-    const handleSubmitLogin = async (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault()
 
         try {
-            const { data } = await login({
-                variables: {
+            const { data } = await HttpClient.post<ILoginResponse>(
+                '/auth/login',
+                {
                     email,
                     password,
-                },
-            })
-
-            if (data?.login?.accessToken) setAccessToken(data.login.accessToken)
-
-            setCookie(
-                undefined,
-                'auth.token',
-                String(data?.login?.accessToken),
-                {
-                    maxAge: 60 * 60 * 1, // 1 hour
                 }
             )
 
-            router.push('/dashboard')
-        } catch (err) {
+            localStorage.setItem('accessToken', String(data?.accessToken))
+
             toast({
-                title: 'Error on login',
-                description:
-                    err instanceof ApolloError
-                        ? err?.graphQLErrors[0].message
-                        : 'An unexpected error has occurred',
-                status: 'error',
+                title: "You're logged in!",
+                description: 'Welcome to the dashboard',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+
+            //router.push('/dashboard')
+        } catch (error) {
+            const axiosError = error as AxiosError<ICustomError>
+
+            console.log(axiosError.response?.data)
+
+            toast({
+                title: 'Occured an error',
+                description: String(axiosError.response?.data?.message),
+                status: Number(axiosError.response?.data?.status),
                 duration: 3000,
                 isClosable: true,
             })
@@ -48,11 +64,10 @@ export const useLogin = () => {
     }
 
     return {
-        handleSubmitLogin,
-        password,
-        setPassword,
         email,
         setEmail,
-        accessToken,
+        password,
+        setPassword,
+        handleSubmit,
     }
 }
