@@ -5,15 +5,6 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useToastContext from '../useToast'
 
-export async function getServerSideProps(context: any) {
-    return {
-        redirect: {
-            permanent: false,
-            destination: '/?status=401',
-        },
-    }
-}
-
 interface IUserSignup {
     id: string
     email: string
@@ -63,7 +54,7 @@ export const useSignup = () => {
                 isClosable: true,
             })
 
-            //router.push('/dashboard')
+            router.push('/dashboard')
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 

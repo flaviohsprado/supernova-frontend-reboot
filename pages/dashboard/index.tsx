@@ -1,3 +1,4 @@
+import DashboardHeader from '@/src/components/Dashboard/Header'
 import { Box, Grid } from '@mui/material'
 
 export default function Dashboard() {
@@ -24,7 +25,7 @@ export default function Dashboard() {
                     gridArea={'header'}
                     sx={{ backgroundColor: 'secondary.dark' }}
                 >
-                    oi
+                    <DashboardHeader />
                 </Grid>
                 <Grid
                     item
