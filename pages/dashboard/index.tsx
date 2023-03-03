@@ -1,4 +1,5 @@
 import DashboardHeader from '@/src/components/Dashboard/Header'
+import SidebarDashboard from '@/src/components/Dashboard/Sidebar'
 import { Box, Grid } from '@mui/material'
 
 export default function Dashboard() {
@@ -32,7 +33,7 @@ export default function Dashboard() {
                     gridArea={'sidebar'}
                     sx={{ backgroundColor: 'secondary.dark' }}
                 >
-                    oi
+                    <SidebarDashboard musics={[]} />
                 </Grid>
                 <Grid
                     item
