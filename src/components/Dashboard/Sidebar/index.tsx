@@ -16,7 +16,7 @@ import {
     SvgIcon,
 } from '@mui/material'
 import { ReactNode } from 'react'
-import ItemButton from './ItemButton'
+import ItemButton from '../../global/ItemButton'
 
 interface LinkItemProps {
     name: string

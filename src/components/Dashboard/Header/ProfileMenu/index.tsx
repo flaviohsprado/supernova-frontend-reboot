@@ -42,7 +42,7 @@ export default function HeaderProfileMenuDashboard({
                         ml: 2,
                         display: 'flex',
                         justifyContent: 'space-between',
-                        width: '15%',
+                        width: '150px',
                         height: '35px',
                         borderRadius: '20px',
                         backgroundColor: 'secondary.light',
