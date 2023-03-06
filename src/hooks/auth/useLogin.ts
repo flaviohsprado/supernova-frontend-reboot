@@ -6,19 +6,6 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useToastContext from '../useToast'
 
-export async function getServerSideProps(context: any) {
-    return {
-        redirect: {
-            permanent: false,
-            destination: '/?status=401',
-        },
-    }
-}
-
-interface ILoginResponse {
-    accessToken: string
-}
-
 export const useLogin = () => {
     const router = useRouter()
     const { toast } = useToastContext()

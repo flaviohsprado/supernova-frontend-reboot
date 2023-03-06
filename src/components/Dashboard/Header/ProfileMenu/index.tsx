@@ -13,11 +13,13 @@ import { useState } from 'react'
 
 interface IHeaderMenuDashboardProps {
     username: string
+    role: string
     avatar: string
 }
 
 export default function HeaderProfileMenuDashboard({
     username,
+    role,
     avatar,
 }: IHeaderMenuDashboardProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -43,7 +45,7 @@ export default function HeaderProfileMenuDashboard({
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '150px',
-                        height: '35px',
+                        height: '38px',
                         borderRadius: '20px',
                         backgroundColor: 'secondary.light',
                         '&:hover': {
@@ -92,6 +94,10 @@ export default function HeaderProfileMenuDashboard({
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                {role === '*' && (
+                    <MenuItem onClick={handleClose}>Administrator</MenuItem>
+                )}
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Settings</MenuItem>

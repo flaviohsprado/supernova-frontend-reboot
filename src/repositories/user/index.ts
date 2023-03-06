@@ -1,3 +1,4 @@
+import { IUser } from '@/src/contexts/Auth.context'
 import { HttpClient } from '@/src/services/HttpClient'
 
 interface UserSignup {
@@ -11,13 +12,30 @@ interface ISignupResponse {
 }
 
 class UserRepository extends HttpClient {
-    public async login({
+    public async me(): Promise<IUser> {
+        const { error, data } = await this.get<IUser>('/users/me')
+
+        if (error) throw new Error(data.message)
+
+        return data as IUser
+    }
+
+    public async findOne(id: string): Promise<IUser> {
+        const { error, data } = await this.get<IUser>(`/users/${id}`)
+
+        if (error) throw new Error(data.message)
+
+        return data as IUser
+    }
+
+    public async create({
         email,
         username,
         password,
     }: UserSignup): Promise<ISignupResponse> {
         const { error, data } = await this.post<ISignupResponse>('/users', {
             email,
+            username,
             password,
         })
 
@@ -25,7 +43,7 @@ class UserRepository extends HttpClient {
 
         const { accessToken } = data
 
-        return { accessToken } as ISignupResponse
+        return { accessToken }
     }
 }
 export default new UserRepository()

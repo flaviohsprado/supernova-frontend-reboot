@@ -1,8 +1,12 @@
+import { AuthContext } from '@/src/contexts/Auth.context'
 import { Box } from '@mui/material'
+import { useContext } from 'react'
 import HeaderNavigatorDashboard from './Navigator'
 import HeaderProfileMenuDashboard from './ProfileMenu'
 
 export default function DashboardHeader() {
+    const { user, isAuthenticated } = useContext(AuthContext)
+
     return (
         <>
             <Box
@@ -17,10 +21,9 @@ export default function DashboardHeader() {
             >
                 <HeaderNavigatorDashboard />
                 <HeaderProfileMenuDashboard
-                    username={'Flávio Prado'}
-                    avatar={
-                        'https://supernova-development.s3.sa-east-1.amazonaws.com/1669348075949-itachi-1.png'
-                    }
+                    username={String(user?.username)}
+                    role={String(user?.role)}
+                    avatar={String(user?.avatar) || 'https://i.pravatar.cc/300'}
                 />
             </Box>
         </>

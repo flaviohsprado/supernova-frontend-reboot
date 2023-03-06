@@ -39,7 +39,7 @@ export const useSignup = () => {
         }
 
         try {
-            const { accessToken } = await UserRepository.login({
+            const { accessToken } = await UserRepository.create({
                 email,
                 username,
                 password,
