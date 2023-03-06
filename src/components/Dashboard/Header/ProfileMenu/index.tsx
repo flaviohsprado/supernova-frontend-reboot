@@ -9,6 +9,7 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material'
+import Link from 'next/link'
 import { useState } from 'react'
 
 interface IHeaderMenuDashboardProps {
@@ -96,7 +97,9 @@ export default function HeaderProfileMenuDashboard({
             >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 {role === '*' && (
-                    <MenuItem onClick={handleClose}>Administrator</MenuItem>
+                    <MenuItem>
+                        <Link href={'/admin/dashboard'}>Admin page</Link>
+                    </MenuItem>
                 )}
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
