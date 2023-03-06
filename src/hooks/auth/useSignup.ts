@@ -1,18 +1,10 @@
 import { ICustomError } from '@/src/interfaces/error.interface'
-import { HttpClient } from '@/src/services/HttpClient'
+import UserRepository from '@/src/repositories/user'
+import TokenHandler from '@/src/utils/TokenHandler.utils'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useToastContext from '../useToast'
-
-export async function getServerSideProps(context: any) {
-    return {
-        redirect: {
-            permanent: false,
-            destination: '/?status=401',
-        },
-    }
-}
 
 interface IUserSignup {
     id: string
@@ -47,13 +39,13 @@ export const useSignup = () => {
         }
 
         try {
-            const { data } = await HttpClient.post<IUserSignup>('/users', {
+            const { accessToken } = await UserRepository.create({
+                email,
                 username,
                 password,
-                email,
             })
 
-            localStorage.setItem('accessToken', String(data?.accessToken))
+            TokenHandler.set(accessToken)
 
             toast({
                 title: "We've created your account!",
@@ -63,7 +55,7 @@ export const useSignup = () => {
                 isClosable: true,
             })
 
-            //router.push('/dashboard')
+            router.push('/dashboard')
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 

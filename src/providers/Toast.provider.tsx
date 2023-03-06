@@ -17,7 +17,6 @@ export function ToastContextProvider({ children }: any) {
 
     const toast = useCallback(
         (toast: IToast) => {
-            console.log('TOAST', toast)
             setToasts((oldToasts: IToast[]) => [...oldToasts, toast])
         },
         [setToasts]

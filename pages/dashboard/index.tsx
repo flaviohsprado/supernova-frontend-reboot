@@ -1,3 +1,6 @@
+import Friendbar from '@/src/components/Dashboard/Friendbar'
+import DashboardHeader from '@/src/components/Dashboard/Header'
+import SidebarDashboard from '@/src/components/Dashboard/Sidebar'
 import { Box, Grid } from '@mui/material'
 
 export default function Dashboard() {
@@ -24,21 +27,21 @@ export default function Dashboard() {
                     gridArea={'header'}
                     sx={{ backgroundColor: 'secondary.dark' }}
                 >
-                    oi
+                    <DashboardHeader />
                 </Grid>
                 <Grid
                     item
                     gridArea={'sidebar'}
                     sx={{ backgroundColor: 'secondary.dark' }}
                 >
-                    oi
+                    <SidebarDashboard musics={[]} />
                 </Grid>
                 <Grid
                     item
                     gridArea={'friendbar'}
                     sx={{ backgroundColor: 'secondary.dark' }}
                 >
-                    oi
+                    <Friendbar />
                 </Grid>
                 <Grid
                     item

@@ -1,44 +1,121 @@
-import axios, { AxiosResponse } from 'axios'
+import TokenHandler from '@/src/utils/TokenHandler.utils'
+import axios, { AxiosError } from 'axios'
+
+interface IResponseParams {
+    error: boolean
+    data?: any
+    message: string
+    status: number
+}
 
 export class HttpClient {
-    //private apiService: AxiosInstance
-    private baseUrl?: string = 'http://localhost:3009/'
+    private readonly apiService = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        headers: {
+            Authorization: `Bearer ${TokenHandler.get()}`,
+        },
+    })
 
-    static async get<T>(endpoint: string): Promise<AxiosResponse<T>> {
-        const apiService = axios.create({
-            baseURL: 'http://localhost:3009',
-        })
+    protected async get<T>(endpoint: string): Promise<IResponseParams> {
+        try {
+            const { data, status, statusText } = await this.apiService.get<T>(
+                endpoint
+            )
 
-        return await apiService.get<T>(endpoint)
+            return {
+                error: false,
+                data,
+                message: statusText,
+                status,
+            }
+        } catch (error) {
+            const axiosError = error as AxiosError
+
+            return {
+                error: true,
+                data: axiosError.toJSON(),
+                message: axiosError.message,
+                status: Number(axiosError.status),
+            }
+        }
     }
 
-    static async post<T>(
+    protected async post<T>(
         endpoint: string,
-        data: any
-    ): Promise<AxiosResponse<T>> {
-        const apiService = axios.create({
-            baseURL: 'http://localhost:3009',
-        })
+        body: any
+    ): Promise<IResponseParams> {
+        try {
+            const { data, status, statusText } = await this.apiService.post<T>(
+                endpoint,
+                body
+            )
 
-        return await apiService.post<T>(endpoint, data)
+            return {
+                error: false,
+                data,
+                message: statusText,
+                status,
+            }
+        } catch (error) {
+            const axiosError = error as AxiosError
+
+            return {
+                error: true,
+                data: axiosError.toJSON(),
+                message: axiosError.message,
+                status: Number(axiosError.status),
+            }
+        }
     }
 
-    static async put<T>(
+    protected async put<T>(
         endpoint: string,
-        data: any
-    ): Promise<AxiosResponse<T>> {
-        const apiService = axios.create({
-            baseURL: 'http://localhost:3009',
-        })
+        body: any
+    ): Promise<IResponseParams> {
+        try {
+            const { data, status, statusText } = await this.apiService.put<T>(
+                endpoint,
+                body
+            )
 
-        return await apiService.put<T>(endpoint, data)
+            return {
+                error: false,
+                data,
+                message: statusText,
+                status,
+            }
+        } catch (error) {
+            const axiosError = error as AxiosError
+
+            return {
+                error: true,
+                data: axiosError.toJSON(),
+                message: axiosError.message,
+                status: Number(axiosError.status),
+            }
+        }
     }
 
-    static async delete<T>(endpoint: string): Promise<AxiosResponse<T>> {
-        const apiService = axios.create({
-            baseURL: 'http://localhost:3009',
-        })
+    protected async delete<T>(endpoint: string): Promise<IResponseParams> {
+        try {
+            const { data, status, statusText } =
+                await this.apiService.delete<T>(endpoint)
 
-        return await apiService.delete<T>(endpoint)
+            return {
+                error: false,
+                data,
+                message: statusText,
+                status,
+            }
+        } catch (error) {
+            const axiosError = error as AxiosError
+
+            return {
+                error: true,
+                data: axiosError.toJSON(),
+                message: axiosError.message,
+                status: Number(axiosError.status),
+            }
+        }
     }
 }

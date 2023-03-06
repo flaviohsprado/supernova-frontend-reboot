@@ -1,6 +1,7 @@
+import { AuthContext } from '@/src/contexts/Auth.context'
 import { useLogin } from '@/src/hooks/auth/useLogin'
 import { Typography } from '@mui/material'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import PrimaryButton from '../../global/button/Primary'
 import SecondaryButton from '../../global/button/Secondary'
 import InputPassword from '../../global/input/Password'
@@ -9,7 +10,14 @@ import BasicModal from '../../global/Modal'
 
 export default function Signin() {
     const [open, setOpen] = useState(false)
-    const { email, setEmail, password, setPassword, handleSubmit } = useLogin()
+    const { email, setEmail, password, setPassword } = useLogin()
+    const { signIn } = useContext(AuthContext)
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault()
+
+        signIn({ email, password })
+    }
 
     return (
         <>
