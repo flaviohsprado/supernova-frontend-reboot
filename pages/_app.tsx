@@ -1,3 +1,4 @@
+import AuthProvider from '@/src/providers/Auth.provider'
 import { ToastContextProvider } from '@/src/providers/Toast.provider'
 import { theme } from '@/src/theme'
 import '@/styles/globals.css'
@@ -14,11 +15,13 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <ToastContextProvider>
-                    <main className={figtree.className}>
-                        <Component {...pageProps} />
-                    </main>
-                </ToastContextProvider>
+                <AuthProvider>
+                    <ToastContextProvider>
+                        <main className={figtree.className}>
+                            <Component {...pageProps} />
+                        </main>
+                    </ToastContextProvider>
+                </AuthProvider>
             </ThemeProvider>
         </>
     )

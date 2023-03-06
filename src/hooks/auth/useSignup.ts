@@ -1,5 +1,6 @@
 import { ICustomError } from '@/src/interfaces/error.interface'
-import { HttpClient } from '@/src/services/HttpClient'
+import UserRepository from '@/src/repositories/user'
+import TokenHandler from '@/src/utils/TokenHandler.utils'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -38,13 +39,13 @@ export const useSignup = () => {
         }
 
         try {
-            const { data } = await HttpClient.post<IUserSignup>('/users', {
+            const { accessToken } = await UserRepository.create({
+                email,
                 username,
                 password,
-                email,
             })
 
-            localStorage.setItem('accessToken', String(data?.accessToken))
+            TokenHandler.set(accessToken)
 
             toast({
                 title: "We've created your account!",

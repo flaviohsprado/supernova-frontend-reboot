@@ -1,22 +1,10 @@
 import { ICustomError } from '@/src/interfaces/error.interface'
-import { HttpClient } from '@/src/services/HttpClient'
+import AuthRepository from '@/src/repositories/auth'
+import TokenHandler from '@/src/utils/TokenHandler.utils'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useToastContext from '../useToast'
-
-export async function getServerSideProps(context: any) {
-    return {
-        redirect: {
-            permanent: false,
-            destination: '/?status=401',
-        },
-    }
-}
-
-interface ILoginResponse {
-    accessToken: string
-}
 
 export const useLogin = () => {
     const router = useRouter()
@@ -29,15 +17,12 @@ export const useLogin = () => {
         event.preventDefault()
 
         try {
-            const { data } = await HttpClient.post<ILoginResponse>(
-                '/auth/login',
-                {
-                    email,
-                    password,
-                }
-            )
+            const { accessToken } = await AuthRepository.login({
+                email,
+                password,
+            })
 
-            localStorage.setItem('accessToken', String(data?.accessToken))
+            TokenHandler.set(accessToken)
 
             toast({
                 title: "You're logged in!",
