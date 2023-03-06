@@ -5,7 +5,7 @@ import HeaderNavigatorDashboard from './Navigator'
 import HeaderProfileMenuDashboard from './ProfileMenu'
 
 export default function DashboardHeader() {
-    const { user, isAuthenticated } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     return (
         <>
