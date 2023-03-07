@@ -10,7 +10,11 @@ export interface IUser {
 export type AuthContextType = {
     isAuthenticated: boolean
     user: IUser | null
-    signIn: (credentials: { email: string; password: string }) => Promise<void>
+    signIn: (credentials: {
+        email: string
+        password: string
+        remember: boolean
+    }) => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
