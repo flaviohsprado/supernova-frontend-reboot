@@ -1,6 +1,5 @@
 import { AuthContext } from '@/src/contexts/Auth.context'
-import { useLogin } from '@/src/hooks/auth/useLogin'
-import { Typography } from '@mui/material'
+import { Checkbox, Typography } from '@mui/material'
 import { useContext, useState } from 'react'
 import PrimaryButton from '../../global/button/Primary'
 import SecondaryButton from '../../global/button/Secondary'
@@ -10,13 +9,15 @@ import BasicModal from '../../global/Modal'
 
 export default function Signin() {
     const [open, setOpen] = useState(false)
-    const { email, setEmail, password, setPassword } = useLogin()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [remember, setRememberMe] = useState(false)
     const { signIn } = useContext(AuthContext)
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
 
-        signIn({ email, password })
+        signIn({ email, password, remember })
     }
 
     return (
@@ -51,6 +52,21 @@ export default function Signin() {
                         }}
                     >
                         Forgot your password?{' '}
+                    </Typography>
+                    <Typography>
+                        Remember me{' '}
+                        <Checkbox
+                            checked={remember}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            defaultChecked
+                            sx={{
+                                color: 'primary.main',
+                                '&.Mui-checked': {
+                                    color: 'primary.main',
+                                },
+                            }}
+                        />
                     </Typography>
                 </form>
             </BasicModal>
