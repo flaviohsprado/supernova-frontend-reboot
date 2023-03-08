@@ -28,6 +28,14 @@ class UserRepository extends HttpClient {
         return data as IUser
     }
 
+    public async findAll(): Promise<IUser[]> {
+        const { error, data } = await this.get<IUser[]>('/users')
+
+        if (error) throw new Error(data.message)
+
+        return data as IUser[]
+    }
+
     public async create({
         email,
         username,

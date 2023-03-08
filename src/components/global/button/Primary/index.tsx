@@ -29,7 +29,15 @@ export default function PrimaryButton({
         <Button
             variant={'contained'}
             color={'primary'}
-            className={classes.button}
+            sx={{
+                backgroundColor: 'primary.dark',
+                color: 'white',
+                borderRadius: '20px',
+                '&:hover': {
+                    backgroundColor: 'primary.light',
+                    color: '#FFF',
+                },
+            }}
             {...props}
         >
             {children}

@@ -32,13 +32,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 permanent: false,
             },
         }
-    } else if (!decodedToken) {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
-        }
     }
 
     return {

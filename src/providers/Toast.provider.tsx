@@ -25,21 +25,17 @@ export function ToastContextProvider({ children }: any) {
     return (
         <ToastContext.Provider value={{ toast }}>
             {children}
-            <div className="toasts-wrapper">
-                {toasts.map((toast: IToast, index) => (
-                    <div className="toast" key={index}>
-                        {toast.description}
-                        <Toast
-                            key={index}
-                            title={toast.title}
-                            description={toast.description}
-                            status={toast.status}
-                            duration={toast.duration}
-                            isClosable={toast.isClosable}
-                        />
-                    </div>
-                ))}
-            </div>
+
+            {toasts.map((toast: IToast, index) => (
+                <Toast
+                    key={index}
+                    title={toast.title}
+                    description={toast.description}
+                    status={toast.status}
+                    duration={toast.duration}
+                    isClosable={toast.isClosable}
+                />
+            ))}
         </ToastContext.Provider>
     )
 }

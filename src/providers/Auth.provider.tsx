@@ -6,6 +6,7 @@ import AuthRepository from '../repositories/auth'
 import UserRepository from '../repositories/user'
 import CryptrService from '../services/Cryptr'
 import { JwtService } from '../services/Jwt'
+import TokenHandler from '../utils/TokenHandler.utils'
 
 interface IAuthProviderProps {
     children: ReactNode
@@ -14,7 +15,7 @@ interface IAuthProviderProps {
 interface ICredentials {
     email: string
     password: string
-    remember: boolean
+    remember?: boolean
 }
 
 export default function AuthProvider({ children }: IAuthProviderProps) {
@@ -23,10 +24,34 @@ export default function AuthProvider({ children }: IAuthProviderProps) {
     const router = useRouter()
 
     useEffect(() => {
-        const { 'nextauth.token': token } = parseCookies()
-        const { 'nextauth.remember': credentials } = parseCookies()
+        const {
+            'nextauth.token': token,
+            'nextauth.remember': rememberMeCredentials,
+        } = parseCookies()
+
+        if (rememberMeCredentials) {
+            const fetchData = async () =>
+                await CryptrService.decrypt(rememberMeCredentials)
+
+            fetchData().then((credentials) => {
+                if (credentials) {
+                    const { email, password } = JSON.parse(credentials)
+
+                    signIn({ email, password, remember: true })
+                }
+            })
+        }
 
         if (token) {
+            const tokenExpirated = JwtService.verifyExpiration(token)
+
+            if (tokenExpirated) {
+                const fetchDataTokenRefresh = async () =>
+                    await handleTokenRefresh(rememberMeCredentials)
+
+                fetchDataTokenRefresh().then((data) => {})
+            }
+
             const fetchData = async () => await UserRepository.me()
 
             fetchData().then((data) => {
@@ -42,64 +67,95 @@ export default function AuthProvider({ children }: IAuthProviderProps) {
                 }
             })
         }
-
-        if (credentials) {
-            const fetchData = async () =>
-                await CryptrService.decrypt(credentials)
-
-            fetchData().then((credentials) => {
-                if (credentials) {
-                    const { email, password } = JSON.parse(credentials)
-
-                    signIn({ email, password, remember: true })
-                }
-            })
-        }
     }, [])
 
     async function signIn({ email, password, remember }: ICredentials) {
         try {
-            const { accessToken } = await AuthRepository.login({
-                email,
-                password,
-            })
+            const accessToken = await handleLogin({ email, password })
 
-            const timeToExpire = new Date().getTime() + 60 * 60 * 24
+            await handleRememberMe({ email, password, remember })
 
-            setCookie(undefined, 'nextauth.token', String(accessToken), {
-                maxAge: timeToExpire,
-            })
+            await handleSetUser(accessToken)
 
-            const encriptedCredentials = await CryptrService.encrypt(
-                JSON.stringify({
-                    email,
-                    password,
-                })
-            )
-
-            if (remember) {
-                setCookie(
-                    undefined,
-                    'nextauth.remember',
-                    String(encriptedCredentials)
-                )
+            if (router.pathname === '/') {
+                router.push('/dashboard')
+            } else {
+                router.push(router.pathname)
             }
-
-            const { id, username, avatar } = await JwtService.decode<IUser>(
-                accessToken
-            )
-
-            setUser({
-                id,
-                username,
-                avatar,
-                role: '*',
-            })
-
-            router.push('/dashboard')
         } catch (error) {
             console.log(error)
         }
+    }
+
+    async function handleLogin({
+        email,
+        password,
+    }: ICredentials): Promise<string> {
+        const { accessToken } = await AuthRepository.login({
+            email,
+            password,
+        })
+
+        const timeToExpire = new Date().getTime() + 60 * 60 * 24
+
+        setCookie(undefined, 'nextauth.token', String(accessToken), {
+            maxAge: timeToExpire,
+        })
+
+        return accessToken
+    }
+
+    async function handleRememberMe({
+        email,
+        password,
+        remember,
+    }: ICredentials): Promise<void> {
+        const encriptedCredentials = await CryptrService.encrypt(
+            JSON.stringify({
+                email,
+                password,
+            })
+        )
+
+        if (remember) {
+            setCookie(
+                undefined,
+                'nextauth.remember',
+                String(encriptedCredentials)
+            )
+        }
+    }
+
+    async function handleTokenRefresh(rememberMeCredentials: string) {
+        const { 'nextauth.refreshToken': refreshToken } = parseCookies()
+
+        if (refreshToken) {
+            const refreshExpirated = JwtService.verifyExpiration(refreshToken)
+
+            if (refreshExpirated && rememberMeCredentials) {
+                const { accessToken } = await AuthRepository.refresh()
+                TokenHandler.set(accessToken)
+            } else if (refreshExpirated && !rememberMeCredentials) {
+                router.push('/')
+            } else if (!refreshExpirated) {
+                TokenHandler.set(refreshToken)
+            }
+        } else {
+            router.push('/')
+        }
+    }
+
+    async function handleSetUser(accessToken: string): Promise<void> {
+        const { id, username, avatar } = await JwtService.decode<IUser>(
+            accessToken
+        )
+
+        setUser({
+            id,
+            username,
+            avatar,
+            role: '*',
+        })
     }
 
     return (

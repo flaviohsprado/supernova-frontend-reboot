@@ -36,8 +36,6 @@ export const useLogin = () => {
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 
-            console.log(axiosError.response?.data)
-
             toast({
                 title: 'Occured an error',
                 description: String(axiosError.response?.data?.message),

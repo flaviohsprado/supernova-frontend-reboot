@@ -1,61 +1,79 @@
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import { DataGrid } from '@mui/x-data-grid'
 
-export type DatatableProps<Data extends object> = {
-    data: Data[]
-    columns: ColumnData<Data, any>[]
+interface IDataTableProps {
+    data: any[]
 }
 
-interface ColumnData {
-    dataKey: keyof Data
-    label: string
-    numeric?: boolean
-    width: number
-}
+export default function DataTable({ data }: IDataTableProps) {
+    const columns = getColumns(data)
+    const rows = getRows(data)
 
-export interface IDataTableProps {
-    data: Array<unknown>
-    columns?: ColumnData[]
-}
-
-export default function Datatable({ data, columns }: IDataTableProps) {
     return (
-        <Paper style={{ height: 400, width: '100%' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {data.map((column, index) => (
-                                <TableCell
-                                    key={index}
-                                    align={'right'}
-                                ></TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.map((row, index) => {
-                            return (
-                                <TableRow
-                                    hover
-                                    role="checkbox"
-                                    tabIndex={-1}
-                                    key={index}
-                                >
-                                    <TableCell key={index + 1} align={'right'}>
-                                        {row.username}
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Paper>
+        <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                checkboxSelection
+                sx={{
+                    '& .MuiDataGrid-columnHeaderTitle': {
+                        color: 'white',
+                    },
+                    '& .MuiDataGrid-cellContent': {
+                        color: 'white',
+                    },
+                    '& .MuiDataGrid-iconButtonContainer': {
+                        color: 'white',
+                    },
+                    '& .MuiDataGrid-columnHeader': {
+                        backgroundColor: 'primary.dark',
+                    },
+                    '& .MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall':
+                        {
+                            backgroundColor: 'primary.dark',
+                            color: 'white',
+                        },
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                }}
+            />
+        </div>
     )
+}
+
+function getColumns(data: any) {
+    const columns: any = []
+
+    if (data.length > 0) {
+        const firstRow = data[0]
+        const keys = Object.keys(firstRow)
+
+        keys.forEach((key) => {
+            const column = {
+                field: key,
+                headerName: key,
+                width: 150,
+            }
+
+            columns.push(column)
+        })
+    }
+
+    return columns
+}
+
+function getRows(data: any) {
+    const rows: any = []
+
+    data.forEach((row: any) => {
+        const newRow: any = {}
+
+        Object.keys(row).forEach((key) => {
+            newRow[key] = row[key]
+        })
+
+        rows.push(newRow)
+    })
+
+    return rows
 }
