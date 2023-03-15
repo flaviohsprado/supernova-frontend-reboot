@@ -1,10 +1,13 @@
+import { parseCookies, setCookie } from 'nookies'
+
 export default class TokenHandler {
     static get() {
-        if (typeof window !== 'undefined')
-            return localStorage.getItem('accessToken')
+        const { 'nextauth.token': accessToken } = parseCookies()
+
+        return accessToken
     }
+
     static set(token: string) {
-        if (typeof window !== 'undefined')
-            return localStorage.setItem('accessToken', token)
+        setCookie(undefined, 'nextauth.token', token)
     }
 }

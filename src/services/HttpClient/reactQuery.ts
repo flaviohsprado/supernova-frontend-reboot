@@ -9,7 +9,8 @@ interface IResponseParams {
     headers?: any
 }
 
-export class HttpClient {
+export class ReactQueryClient {
+    //private readonly client = useQueryClient()
     private readonly client = axios.create({
         baseURL: process.env.NEXT_PUBLIC_API_URL,
         headers: {

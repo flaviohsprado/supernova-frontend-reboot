@@ -59,7 +59,6 @@ export default function Signin() {
                             checked={remember}
                             onChange={(e) => setRememberMe(e.target.checked)}
                             inputProps={{ 'aria-label': 'controlled' }}
-                            defaultChecked
                             sx={{
                                 color: 'primary.main',
                                 '&.Mui-checked': {
