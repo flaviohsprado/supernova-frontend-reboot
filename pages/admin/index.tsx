@@ -1,6 +1,5 @@
 import AdminDashboardHome from '@/src/components/Admin/Home'
 import AdminDashboardSidebar from '@/src/components/Admin/Sidebar'
-import { JwtService } from '@/src/services/Jwt'
 import Box from '@mui/material/Box'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
@@ -25,10 +24,10 @@ export default function AdminDashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { ['nextauth.token']: token } = parseCookies(context)
-    const decodedToken = JwtService.decode(token)
+    const { 'nextauth.token': token, 'nextauth.refreshToken': refreshToken } =
+        parseCookies(context)
 
-    if (!token) {
+    if (!token || !refreshToken) {
         return {
             redirect: {
                 destination: '/',
