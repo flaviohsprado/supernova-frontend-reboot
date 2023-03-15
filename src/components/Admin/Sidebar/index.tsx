@@ -1,5 +1,6 @@
 import AlbumIcon from '@mui/icons-material/Album'
 import GroupIcon from '@mui/icons-material/Group'
+import HomeIcon from '@mui/icons-material/Home'
 import InterpreterModeIcon from '@mui/icons-material/InterpreterMode'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import RuleIcon from '@mui/icons-material/Rule'
@@ -13,8 +14,14 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Toolbar from '@mui/material/Toolbar'
 import { ReactNode } from 'react'
+import AdminDashboardHome from '../Home'
+import AdminDashboardUser from '../User'
 
 const drawerWidth = 240
+
+interface IAdminDashboardSidebarProps {
+    setPage: (page: ReactNode) => void
+}
 
 interface LinkItemProps {
     name: string
@@ -23,14 +30,17 @@ interface LinkItemProps {
 }
 
 const LinkItems: LinkItemProps[] = [
-    { name: 'Users', icon: GroupIcon },
+    { name: 'Home', icon: HomeIcon, page: <AdminDashboardHome /> },
+    { name: 'Users', icon: GroupIcon, page: <AdminDashboardUser /> },
     { name: 'Role', icon: RuleIcon },
     { name: 'Album', icon: AlbumIcon },
     { name: 'Artist', icon: InterpreterModeIcon },
     { name: 'Music', icon: MusicNoteIcon },
 ]
 
-export default function AdminDashboardSidebar() {
+export default function AdminDashboardSidebar({
+    setPage,
+}: IAdminDashboardSidebarProps) {
     return (
         <>
             <Drawer
@@ -53,6 +63,7 @@ export default function AdminDashboardSidebar() {
                     {LinkItems.map((item: LinkItemProps, index) => (
                         <ListItem key={index} disablePadding>
                             <ListItemButton
+                                onClick={() => setPage(item.page)}
                                 sx={{
                                     color: 'white',
                                     '&:hover': {
