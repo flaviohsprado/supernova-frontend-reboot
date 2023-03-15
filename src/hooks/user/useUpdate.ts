@@ -13,7 +13,10 @@ interface IUserSignup {
     accessToken: string
 }
 
-export const useUpdateUser = (id: string) => {
+export const useUpdateUser = (
+    id: string,
+    setOpen: (value: boolean) => void
+) => {
     const { toast } = useToastContext()
 
     const [username, setUsername] = useState('')
@@ -52,6 +55,8 @@ export const useUpdateUser = (id: string) => {
                 duration: 3000,
                 isClosable: true,
             })
+
+            setOpen(false)
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 

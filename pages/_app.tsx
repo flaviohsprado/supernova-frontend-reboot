@@ -6,8 +6,8 @@ import '@/styles/globals.css'
 import { ThemeProvider } from '@mui/material/styles'
 import { Figtree } from '@next/font/google'
 import type { AppProps } from 'next/app'
-import { QueryClient } from 'react-query'
-import { QueryClientProvider } from 'react-query/types/react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const figtree = Figtree({
     weight: '400',
@@ -27,6 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
                                 <main className={figtree.className}>
                                     <Component {...pageProps} />
                                 </main>
+                                <ReactQueryDevtools initialIsOpen={false} />
                             </QueryClientProvider>
                         </ToastContextProvider>
                     </DialogProvider>

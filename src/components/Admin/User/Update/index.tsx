@@ -24,7 +24,7 @@ export default function UpdateUser({ id }: IUpdateUserProps) {
         confirmPassword,
         setConfirmPassword,
         handleSubmit,
-    } = useUpdateUser(id)
+    } = useUpdateUser(id, setOpen)
 
     useEffect(() => {
         const fetchData = async () => await UserRepository.findOne(id)
@@ -54,25 +54,21 @@ export default function UpdateUser({ id }: IUpdateUserProps) {
                     <InputText
                         label="Email"
                         value={email}
-                        required
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <InputText
                         label="Username"
                         value={username}
-                        required
                         onChange={(e) => setUsername(e.target.value)}
                     />
                     <InputPassword
                         label="Password"
                         value={password}
-                        required
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <InputPassword
                         label="Confirm your password"
                         value={confirmPassword}
-                        required
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <SecondaryButton label="Update" type={'submit'} />

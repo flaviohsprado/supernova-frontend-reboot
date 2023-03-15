@@ -1,23 +1,22 @@
+import AdminDashboardHome from '@/src/components/Admin/Home'
 import AdminDashboardSidebar from '@/src/components/Admin/Sidebar'
-import AdminDashboardUser from '@/src/components/Admin/User'
-import { JwtService } from '@/src/services/Jwt'
 import Box from '@mui/material/Box'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { ReactNode, useState } from 'react'
 
 export default function AdminDashboard() {
-    const [page, setPage] = useState<ReactNode>(0)
+    const [page, setPage] = useState<ReactNode>(<AdminDashboardHome />)
 
     return (
         <>
             <Box sx={{ display: 'flex' }}>
-                <AdminDashboardSidebar />
+                <AdminDashboardSidebar setPage={setPage} />
                 <Box
                     component="main"
                     sx={{ flexGrow: 1, bgcolor: 'secondary.dark', p: 3 }}
                 >
-                    <AdminDashboardUser />
+                    {page}
                 </Box>
             </Box>
         </>
@@ -25,10 +24,10 @@ export default function AdminDashboard() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { ['nextauth.token']: token } = parseCookies(context)
-    const decodedToken = JwtService.decode(token)
+    const { 'nextauth.token': token, 'nextauth.refreshToken': refreshToken } =
+        parseCookies(context)
 
-    if (!token) {
+    if (!token || !refreshToken) {
         return {
             redirect: {
                 destination: '/',
