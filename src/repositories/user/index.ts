@@ -1,4 +1,3 @@
-import { IUser } from '@/src/contexts/Auth.context'
 import { HttpClient } from '@/src/services/HttpClient'
 
 interface UserSignup {
@@ -11,29 +10,44 @@ interface ISignupResponse {
     accessToken: string
 }
 
+interface IUserResponse {
+    id: string
+    username: string
+    email: string
+    accessToken: string
+    role: string
+    avatar: string
+}
+
+interface IUserRequest {
+    username: string
+    email: string
+    password: string
+}
+
 class UserRepository extends HttpClient {
-    public async me(): Promise<IUser> {
-        const { error, data } = await this.get<IUser>('/users/me')
+    public async me(): Promise<IUserResponse> {
+        const { error, data } = await this.get<IUserResponse>('/users/me')
 
         if (error) throw new Error(data.message)
 
-        return data as IUser
+        return data as IUserResponse
     }
 
-    public async findOne(id: string): Promise<IUser> {
-        const { error, data } = await this.get<IUser>(`/users/${id}`)
+    public async findOne(id: string): Promise<IUserResponse> {
+        const { error, data } = await this.get<IUserResponse>(`/users/${id}`)
 
         if (error) throw new Error(data.message)
 
-        return data as IUser
+        return data as IUserResponse
     }
 
-    public async findAll(): Promise<IUser[]> {
-        const { error, data } = await this.get<IUser[]>('/users')
+    public async findAll(): Promise<IUserResponse[]> {
+        const { error, data } = await this.get<IUserResponse[]>('/users')
 
         if (error) throw new Error(data.message)
 
-        return data as IUser[]
+        return data as IUserResponse[]
     }
 
     public async create({
@@ -52,6 +66,30 @@ class UserRepository extends HttpClient {
         const { accessToken } = data
 
         return { accessToken }
+    }
+
+    public async update(
+        id: string,
+        user: IUserRequest
+    ): Promise<IUserResponse> {
+        const { error, data } = await this.put<IUserResponse>(
+            `/users/${id}`,
+            user
+        )
+
+        if (error) throw new Error(data.message)
+
+        return data as IUserResponse
+    }
+
+    public async destroy(id: string): Promise<boolean> {
+        const { error, data } = await this.delete<IUserResponse>(`/users/${id}`)
+
+        if (error) {
+            throw new Error(data.message)
+        }
+
+        return data.success
     }
 }
 export default new UserRepository()

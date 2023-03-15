@@ -4,8 +4,11 @@ import { JwtService } from '@/src/services/Jwt'
 import Box from '@mui/material/Box'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
+import { ReactNode, useState } from 'react'
 
 export default function AdminDashboard() {
+    const [page, setPage] = useState<ReactNode>(0)
+
     return (
         <>
             <Box sx={{ display: 'flex' }}>
