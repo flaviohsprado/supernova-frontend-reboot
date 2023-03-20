@@ -19,7 +19,6 @@ interface IUpdateRoleProps {
 
 export default function UpdateRole({ id }: IUpdateRoleProps) {
     const date = new Date().toLocaleTimeString()
-    console.log('ID', id, date)
     const [open, setOpen] = useState(false)
     const {
         name,
@@ -47,8 +46,6 @@ export default function UpdateRole({ id }: IUpdateRoleProps) {
             const role = await RoleRepository.findOne(id)
             setName(role.name)
             castPermission(role.permissions)
-
-            console.log('ROLE', role)
         },
         {
             refetchOnWindowFocus: true,

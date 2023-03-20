@@ -37,9 +37,6 @@ export default function GlobalDialog({
     const handleDisagree = () => {
         setAgree(false)
         handleclose(false)
-
-        console.log('disagree')
-        console.log('open', open)
     }
 
     return (

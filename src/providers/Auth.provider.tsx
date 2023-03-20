@@ -93,8 +93,6 @@ export default function AuthProvider({ children }: IAuthProviderProps) {
     async function handleTokenRefresh(rememberMeCredentials: string) {
         const { 'nextauth.refreshToken': refreshToken } = parseCookies()
 
-        console.log('refreshToken', refreshToken)
-
         if (refreshToken) {
             const refreshExpirated = JwtService.verifyExpiration(refreshToken)
 
