@@ -27,8 +27,6 @@ export default function AdminDashboardUser() {
         <>
             <Datatable
                 data={users}
-                updateButton={true}
-                deleteButton={true}
                 hiddenColumns={{
                     role: false,
                     file: false,

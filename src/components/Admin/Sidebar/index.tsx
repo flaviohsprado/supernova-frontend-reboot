@@ -14,7 +14,11 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Toolbar from '@mui/material/Toolbar'
 import { ReactNode } from 'react'
+import AdminDashboardAlbum from '../Album'
+import AdminDashboardArtist from '../Artist'
 import AdminDashboardHome from '../Home'
+import AdminDashboardMusic from '../Music'
+import AdminDashboardRole from '../Role'
 import AdminDashboardUser from '../User'
 
 const drawerWidth = 240
@@ -32,10 +36,14 @@ interface LinkItemProps {
 const LinkItems: LinkItemProps[] = [
     { name: 'Home', icon: HomeIcon, page: <AdminDashboardHome /> },
     { name: 'Users', icon: GroupIcon, page: <AdminDashboardUser /> },
-    { name: 'Role', icon: RuleIcon },
-    { name: 'Album', icon: AlbumIcon },
-    { name: 'Artist', icon: InterpreterModeIcon },
-    { name: 'Music', icon: MusicNoteIcon },
+    { name: 'Role', icon: RuleIcon, page: <AdminDashboardRole /> },
+    { name: 'Album', icon: AlbumIcon, page: <AdminDashboardAlbum /> },
+    {
+        name: 'Artist',
+        icon: InterpreterModeIcon,
+        page: <AdminDashboardArtist />,
+    },
+    { name: 'Music', icon: MusicNoteIcon, page: <AdminDashboardMusic /> },
 ]
 
 export default function AdminDashboardSidebar({

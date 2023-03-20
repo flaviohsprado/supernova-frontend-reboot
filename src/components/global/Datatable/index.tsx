@@ -1,32 +1,22 @@
-import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
+import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import { ReactNode } from 'react'
 import DeleteDatatableButton from './DeleteButton'
 import UpdateDatatableButton from './UpdateButton'
 
 interface IDataTableProps {
     data: any[]
-    handleDelete: (id: string) => void
-    updateButton?: boolean
-    deleteButton?: boolean
     hiddenColumns?: object
-    childrenUpdate?: ReactNode
+    childrenUpdate: ReactNode
+    handleDelete: (id: string) => void
 }
 
 export default function DataTable({
     data,
-    updateButton,
-    deleteButton,
     hiddenColumns,
     childrenUpdate,
     handleDelete,
 }: IDataTableProps) {
-    const columns = getColumns(
-        data,
-        handleDelete,
-        updateButton,
-        deleteButton,
-        childrenUpdate
-    )
+    const columns = getColumns(data, childrenUpdate, handleDelete)
     const rows = getRows(data)
 
     return (
@@ -78,10 +68,8 @@ export default function DataTable({
 
 function getColumns(
     data: any,
-    handleDelete: (id: string) => void,
-    updateButton?: boolean,
-    deleteButton?: boolean,
-    childrenUpdate?: ReactNode
+    childrenUpdate?: ReactNode,
+    handleDelete?: (id: string) => void
 ) {
     const columns: any = []
 
@@ -93,16 +81,8 @@ function getColumns(
             columns.push(getColumnDefinition(key))
         })
 
-        if (updateButton || deleteButton) {
-            columns.push(
-                addActionButtons(
-                    handleDelete,
-                    updateButton,
-                    deleteButton,
-                    childrenUpdate
-                )
-            )
-        }
+        if (childrenUpdate || handleDelete)
+            columns.push(addActionButtons(childrenUpdate, handleDelete))
     }
 
     return columns
@@ -181,26 +161,21 @@ function getColumnDefinition(key: any): any {
     }
 }
 
-function addActionButtons(
-    handleDelete: (id: string) => void,
-    updateButton?: boolean,
-    deleteButton?: boolean,
-    childrenUpdate?: ReactNode
-) {
+function addActionButtons(childrenUpdate: ReactNode, handleDelete: any) {
     return {
         field: 'actions',
         type: 'actions',
         width: 100,
-        getActions: (params: GridRenderCellParams<String>) => [
-            updateButton && (
+        getActions: (params: GridRowParams) => [
+            childrenUpdate && (
                 <UpdateDatatableButton
                     key={`update-data-${params.id}`}
-                    id={String(params.id)}
+                    id={String(JSON.stringify(params.id))}
                 >
                     {childrenUpdate}
                 </UpdateDatatableButton>
             ),
-            deleteButton && (
+            handleDelete && (
                 <DeleteDatatableButton
                     key={`delete-data-${params.id}`}
                     id={String(params.id)}

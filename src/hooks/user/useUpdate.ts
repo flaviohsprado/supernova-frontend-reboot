@@ -3,21 +3,15 @@ import UserRepository from '@/src/repositories/user'
 import TokenHandler from '@/src/utils/TokenHandler.utils'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
+import { useRefetch } from '../useRefetch'
 import useToastContext from '../useToast'
-
-interface IUserSignup {
-    id: string
-    email: string
-    username: string
-    password: string
-    accessToken: string
-}
 
 export const useUpdateUser = (
     id: string,
     setOpen: (value: boolean) => void
 ) => {
     const { toast } = useToastContext()
+    const { refetch } = useRefetch()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -57,6 +51,7 @@ export const useUpdateUser = (
             })
 
             setOpen(false)
+            refetch('users')
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 

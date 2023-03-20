@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import { TextField, TextFieldProps } from '@mui/material'
 import { ChangeEvent } from 'react'
 
 interface IInputTextProps {
@@ -6,6 +6,7 @@ interface IInputTextProps {
     value: string
     required?: boolean
     onChange: (event: ChangeEvent<HTMLInputElement>) => void
+    props?: TextFieldProps
 }
 
 export default function InputText({
@@ -13,6 +14,7 @@ export default function InputText({
     value,
     required,
     onChange,
+    props,
 }: IInputTextProps) {
     return (
         <>
@@ -49,10 +51,11 @@ export default function InputText({
                             borderColor: '#FFF',
                         },
                         '&.Mui-focused fieldset': {
-                            borderColor: '#FFF',
+                            borderColor: 'primary.main',
                         },
                     },
                 }}
+                {...props}
             />
         </>
     )

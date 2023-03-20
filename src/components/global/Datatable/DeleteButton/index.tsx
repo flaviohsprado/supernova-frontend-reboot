@@ -14,15 +14,11 @@ export default function DeleteDatatableButton({
     const { dialog } = useDialogContext()
 
     function handleDestroy() {
-        //TODO: transform this into a provider
-        const response = dialog({
+        dialog({
             title: 'Delete',
             message: 'Are you sure you want to delete this item?',
+            handleOk: () => handleDelete(id),
         })
-
-        console.log('response', response)
-
-        //if (response) handleDelete(id)
     }
 
     return (

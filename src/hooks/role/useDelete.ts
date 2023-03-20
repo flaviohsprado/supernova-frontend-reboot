@@ -1,26 +1,26 @@
 import { ICustomError } from '@/src/interfaces/error.interface'
 import { AxiosError } from 'axios'
-import UserRepository from '../../repositories/user'
+import RoleRepository from '../../repositories/role'
 import { useRefetch } from '../useRefetch'
 import useToastContext from '../useToast'
 
-export const useDeleteUser = () => {
+export const useDeleteRole = () => {
     const { toast } = useToastContext()
     const { refetch } = useRefetch()
 
     const handleDelete = async (id: string) => {
         try {
-            await UserRepository.destroy(id)
+            await RoleRepository.destroy(id)
 
             toast({
-                title: 'User deleted!',
-                description: 'User has been deleted successfully',
+                title: 'Role deleted!',
+                description: 'Role has been deleted successfully',
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
             })
 
-            refetch('users')
+            refetch('roles')
         } catch (error) {
             const axiosError = error as AxiosError<ICustomError>
 
