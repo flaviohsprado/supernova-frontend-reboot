@@ -18,6 +18,7 @@ export default function DeleteDatatableButton({
         const response = dialog({
             title: 'Delete',
             message: 'Are you sure you want to delete this item?',
+            handleOk: () => handleDelete(id),
         })
 
         console.log('response', response)

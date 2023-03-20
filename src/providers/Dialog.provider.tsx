@@ -34,27 +34,22 @@ const Transition = forwardRef(function Transition(
 export function DialogProvider({ children }: IDialogProviderProps) {
     const [dialog, setDialog] = useState<IDialog>({} as IDialog)
     const [open, setOpen] = useState(false)
-    const [agree, setAgree] = useState(false)
 
     const handleClose = () => {
         setOpen(false)
-        setAgree(false)
     }
 
-    const handleAgree = () => {
-        setAgree(true)
+    const handleAgree = (handleOk: Function) => {
+        handleOk()
         setOpen(false)
     }
 
     const useDialog = useCallback(
         (dialog: IDialog) => {
             setDialog(dialog)
-
             setOpen(true)
-
-            return agree
         },
-        [setDialog, agree]
+        [setDialog]
     )
 
     return (
@@ -75,7 +70,9 @@ export function DialogProvider({ children }: IDialogProviderProps) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleAgree}>Agree</Button>
+                    <Button onClick={() => handleAgree(dialog.handleOk)}>
+                        Agree
+                    </Button>
                 </DialogActions>
             </Dialog>
         </DialogContext.Provider>

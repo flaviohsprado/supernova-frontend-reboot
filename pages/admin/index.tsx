@@ -1,8 +1,6 @@
 import AdminDashboardHome from '@/src/components/Admin/Home'
 import AdminDashboardSidebar from '@/src/components/Admin/Sidebar'
 import Box from '@mui/material/Box'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
 import { ReactNode, useState } from 'react'
 
 export default function AdminDashboard() {
@@ -23,9 +21,11 @@ export default function AdminDashboard() {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+/*export const getServerSideProps: GetServerSideProps = async (context) => {
     const { 'nextauth.token': token, 'nextauth.refreshToken': refreshToken } =
-        parseCookies(context)
+        parseCookies()
+
+    console.log(token, refreshToken)
 
     if (!token || !refreshToken) {
         return {
@@ -39,4 +39,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {},
     }
-}
+}*/
